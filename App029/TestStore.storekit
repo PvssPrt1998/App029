@@ -1,0 +1,214 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "2493EF80",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "5.99",
+      "familyShareable" : false,
+      "internalID" : "57E50662",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "100 tokens",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "100_Tokens_5.99",
+      "referenceName" : "100",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "19.99",
+      "familyShareable" : false,
+      "internalID" : "C063034A",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "250 tokens",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "250_Tokens_19.99.",
+      "referenceName" : "250",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "34.99",
+      "familyShareable" : false,
+      "internalID" : "4707695B",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "500 Tokens",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "500_Tokens_34.99.",
+      "referenceName" : "500",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "99.99",
+      "familyShareable" : false,
+      "internalID" : "AEB03A1C",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "2000 Tokens",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "2000_Tokens_99.99.",
+      "referenceName" : "2000",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "59.99",
+      "familyShareable" : false,
+      "internalID" : "D9C1DA7C",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "1000 Tokens",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "1000_Tokens_59.99.",
+      "referenceName" : "1000",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "37A89ADE",
+      "localizations" : [
+
+      ],
+      "name" : "test",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "39.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "1FDB4461",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "yearly_39.99_nottrial",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Yearly",
+          "subscriptionGroupID" : "37A89ADE",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "98C4D845",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "",
+              "displayName" : "",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "week_4.99_nottrial",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Weekly",
+          "subscriptionGroupID" : "37A89ADE",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

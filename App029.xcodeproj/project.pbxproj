@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		990D5B272D7C8533001F07A1 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 990D5B262D7C8533001F07A1 /* Alamofire */; };
+		990D5B9C2D7E83E9001F07A1 /* ApphudSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 990D5B9B2D7E83E9001F07A1 /* ApphudSDK */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		990D5AE42D7C5379001F07A1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,9 +34,22 @@
 		990D5AED2D7C5379001F07A1 /* App029UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = App029UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		990D5BC12D7F0756001F07A1 /* Exceptions for "App029" folder in "App029" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 990D5AD22D7C5377001F07A1 /* App029 */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		990D5AD52D7C5377001F07A1 /* App029 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				990D5BC12D7F0756001F07A1 /* Exceptions for "App029" folder in "App029" target */,
+			);
 			path = App029;
 			sourceTree = "<group>";
 		};
@@ -52,6 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				990D5B272D7C8533001F07A1 /* Alamofire in Frameworks */,
+				990D5B9C2D7E83E9001F07A1 /* ApphudSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +132,8 @@
 			);
 			name = App029;
 			packageProductDependencies = (
+				990D5B262D7C8533001F07A1 /* Alamofire */,
+				990D5B9B2D7E83E9001F07A1 /* ApphudSDK */,
 			);
 			productName = App029;
 			productReference = 990D5AD32D7C5377001F07A1 /* App029.app */;
@@ -195,6 +217,10 @@
 			);
 			mainGroup = 990D5ACA2D7C5377001F07A1;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				990D5B252D7C8533001F07A1 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				990D5B9A2D7E83E9001F07A1 /* XCRemoteSwiftPackageReference "ApphudSDK" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 990D5AD42D7C5377001F07A1 /* Products */;
 			projectDirPath = "";
@@ -398,21 +424,31 @@
 				DEVELOPMENT_ASSET_PATHS = "\"App029/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = App029/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Pika art";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to access the gallery";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We would like to access your gallery to save videos.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use your data to show you personalized ads and improve your app experience.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.029swui.App029;
+				MARKETING_VERSION = 1.7;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dmyver.skp1l3n;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -426,21 +462,31 @@
 				DEVELOPMENT_ASSET_PATHS = "\"App029/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = App029/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Pika art";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to access the gallery";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We would like to access your gallery to save videos.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use your data to show you personalized ads and improve your app experience.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.029swui.App029;
+				MARKETING_VERSION = 1.7;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dmyver.skp1l3n;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -552,6 +598,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		990D5B252D7C8533001F07A1 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		990D5B9A2D7E83E9001F07A1 /* XCRemoteSwiftPackageReference "ApphudSDK" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apphud/ApphudSDK";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		990D5B262D7C8533001F07A1 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 990D5B252D7C8533001F07A1 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		990D5B9B2D7E83E9001F07A1 /* ApphudSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 990D5B9A2D7E83E9001F07A1 /* XCRemoteSwiftPackageReference "ApphudSDK" */;
+			productName = ApphudSDK;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 990D5ACB2D7C5377001F07A1 /* Project object */;
 }

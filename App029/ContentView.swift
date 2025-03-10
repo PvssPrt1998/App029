@@ -1,24 +1,22 @@
-//
-//  ContentView.swift
-//  App029
-//
-//  Created by Николай Щербаков on 08.03.2025.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    
+    @ObservedObject private var router = EffectsV2Router()
+    
+    @AppStorage("showOnboarding") var showOnboarding = true
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        if showOnboarding {
+            OnboardingView(showOnboarding: $showOnboarding)
+        } else {
+            Tab()
+                .environmentObject(router)
         }
-        .padding()
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(Source())
 }
