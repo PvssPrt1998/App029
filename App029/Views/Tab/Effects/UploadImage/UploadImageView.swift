@@ -31,7 +31,12 @@ struct UploadImageView: View {
                 }
                 
                 Button {
+                    
                     if source.tokens < 1 {
+                        if !source.proSubscription {
+                            showPaywall = true
+                            return
+                        }
                         showPaywallToken = true
                     } else {
                         var effect = effect
@@ -71,7 +76,6 @@ struct UploadImageView: View {
                         .scaledToFit()
                         .frame(width: 82, height: 32)
                 }
-                
                     .disabled(source.proSubscription == true)
                     .opacity(source.proSubscription ? 0 : 1)
             }

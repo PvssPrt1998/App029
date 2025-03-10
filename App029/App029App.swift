@@ -20,7 +20,7 @@ struct App029App: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        Apphud.start(apiKey: "app_hSQinyB3jT3EdeFUug5j3ectRjbUe2")
+        Apphud.start(apiKey: "app_hEmr32ddRfrjXznMZ3WW2f96jBKCxc")
         Apphud.setDeviceIdentifiers(idfa: nil, idfv: UIDevice.current.identifierForVendor?.uuidString)
         userID = Apphud.userID()
         fetchIDFA()

@@ -60,6 +60,10 @@ struct SettingsView: View {
     private var content: some View {
         VStack(spacing: 4) {
             Button {
+            if !source.proSubscription {
+                showPaywall = true
+                return
+            }
                  showPaywallToken = true
             } label: {
                 button(imageTitle: "star.circle.fill", title: "Tokens to generate")

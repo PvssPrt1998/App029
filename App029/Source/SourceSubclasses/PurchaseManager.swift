@@ -21,6 +21,34 @@ class PurchaseManager: NSObject {
     var hasUnlockedPro: Bool {
         return Apphud.hasPremiumAccess()
     }
+    
+    @MainActor
+    func returnPrice(product: ApphudProduct) -> String {
+        return product.skProduct?.price.stringValue ?? ""
+    }
+
+    @MainActor
+    func returnPriceSign(product: ApphudProduct) -> String {
+        return product.skProduct?.priceLocale.currencySymbol ?? ""
+    }
+    
+    @MainActor
+    func returnName(product: ApphudProduct) -> String {
+        guard let subscriptionPeriod = product.skProduct?.subscriptionPeriod else { return "" }
+        
+        switch subscriptionPeriod.unit {
+        case .day:
+            return "Weekly"
+        case .week:
+            return "Weekly"
+        case .month:
+            return "Monthly"
+        case .year:
+            return "Yearly"
+        @unknown default:
+            return "Unknown"
+        }
+    }
 
     @MainActor
     func dateSubscribe() -> String {
@@ -59,34 +87,28 @@ class PurchaseManager: NSObject {
         }
     }
     
-    @MainActor
-    func returnPrice(product: ApphudProduct) -> String {
-        return product.skProduct?.price.stringValue ?? ""
-    }
 
-    @MainActor
-    func returnPriceSign(product: ApphudProduct) -> String {
-        return product.skProduct?.priceLocale.currencySymbol ?? ""
-    }
+
     
     @MainActor
-    func returnName(product: ApphudProduct) -> String {
-        guard let subscriptionPeriod = product.skProduct?.subscriptionPeriod else { return "" }
-        
-        switch subscriptionPeriod.unit {
-        case .day:
-            return "Weekly"
-        case .week:
-            return "Weekly"
-        case .month:
-            return "Monthly"
-        case .year:
-            return "Yearly"
-        @unknown default:
-            return "Unknown"
+    func loadPaywalls(escaping: @escaping() -> Void) {
+
+        Apphud.paywallsDidLoadCallback { paywalls, arg in
+           
+            if let paywall = paywalls.first(where: { $0.identifier == self.paywallID}) {
+                Apphud.paywallShown(paywall)
+                
+                let products = paywall.products
+                self.productsApphud = products
+                
+                print(products, "Proddd")
+                for i in products {
+                    print(i.productId, "ID")
+                }
+                escaping()
+            }
         }
     }
-
     
     @MainActor
     func loadPaywalls1(escaping: @escaping() -> Void) {
@@ -106,36 +128,6 @@ class PurchaseManager: NSObject {
         }
     }
     
-    @MainActor
-    func loadPaywalls(escaping: @escaping() -> Void) {
-
-        Apphud.paywallsDidLoadCallback { paywalls, arg in
-           
-            if let paywall = paywalls.first(where: { $0.identifier == self.paywallID}) {
-                Apphud.paywallShown(paywall)
-                
-                let products = paywall.products
-                self.productsApphud = products
-                
-                print(products, "Proddd")
-                for i in products {
-                    print(i.productId, "ID")
-                }
-            }
-            if let paywall = paywalls.first(where: { $0.identifier == self.paywallID1}) {
-                Apphud.paywallShown(paywall)
-                
-                let products = paywall.products
-                self.productsApphud1 = products
-                
-                print(products, "Proddd")
-                for i in products {
-                    print(i.productId, "ID")
-                }
-                escaping()
-            }
-        }
-    }
     
     @MainActor func restorePurchase(escaping: @escaping(Bool) -> Void) {
         print("restore")

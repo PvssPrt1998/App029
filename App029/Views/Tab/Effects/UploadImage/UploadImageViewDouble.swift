@@ -46,6 +46,10 @@ struct UploadImageViewDouble: View {
                 
                 Button {
                     guard source.tokens >= 1 else {
+                        if !source.proSubscription {
+                            showPaywall = true
+                            return
+                        }
                         showPaywallToken = true
                         return
                     }

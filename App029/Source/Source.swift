@@ -54,6 +54,7 @@ final class Source: ObservableObject {
     var previewDict: [Int:String] = [:] //id previewSmall
     
     init() {
+        
         purchaseManager.loadPaywalls {
             if Apphud.hasActiveSubscription() {
                 self.proSubscription = true

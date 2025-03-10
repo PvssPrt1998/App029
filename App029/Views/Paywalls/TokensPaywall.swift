@@ -155,11 +155,17 @@ struct TokensPaywall: View {
     
     private func token(selection: Int) -> some View {
         HStack {
-            Text(getTokenAmount(token: source.purchaseManager.productsApphud1[selection]))
-                .font(.system(size: 20, weight: .semibold))
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            Text("\(getSubscriptionPrice(for: source.purchaseManager.productsApphud1[selection]))")
+            HStack(spacing: 4) {
+                Text(getTokenAmount(token: source.purchaseManager.productsApphud1[selection]))
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundColor(.white)
+                    .frame(width: 60)
+                Text("Tokens")
+                    .font(.system(size: 17, weight: .regular))
+                    .foregroundColor(.white.opacity(0.6))
+            }.frame(maxWidth: .infinity, alignment: .leading)
+            
+            Text("\(getSubscriptionPrice(for: source.purchaseManager.productsApphud1[selection]).truncate(places: 2))")
                 .font(.system(size: 15, weight: .medium))
                 .foregroundColor(.white.opacity(0.6))
         }
@@ -179,4 +185,10 @@ struct TokensPaywall: View {
 
 #Preview {
     //PaywallView()
+}
+
+extension Double {
+    func truncate(places : Int)-> Double {
+        return Double(floor(pow(10.0, Double(places)) * self)/pow(10.0, Double(places)))
+    }
 }
