@@ -16,7 +16,7 @@ final class Source: ObservableObject {
         }
     }
     
-    @Published var proSubscription = false {
+    @Published var proSubscription = true {
         didSet {
             purchaseSubscriptionPublisher.send(true)
         }
@@ -59,9 +59,10 @@ final class Source: ObservableObject {
             if Apphud.hasActiveSubscription() {
                 self.proSubscription = true
             }
-            self.purchaseManager.loadPaywalls1 {
-                print(self.purchaseManager.productsApphud1)
-            }
+            
+        }
+        self.purchaseManager.loadPaywalls1 {
+            print(self.purchaseManager.productsApphud1)
         }
         
         localLoad()

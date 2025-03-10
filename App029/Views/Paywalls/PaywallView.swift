@@ -9,10 +9,6 @@ struct PaywallView: View {
     @EnvironmentObject var source: Source
     @State var isYear = true
     
-    init(show: Binding<Bool>) {
-        self._show = show
-    }
-    
     var body: some View {
         ZStack {
             Color.bgPaywall.ignoresSafeArea()
@@ -57,6 +53,9 @@ struct PaywallView: View {
                         self.source.networking.fetchCurrentTokens(apphudId: userID) { tokens in
                             print("Available tokens \(tokens)")
                             self.source.tokens = tokens
+                            withAnimation {
+                                show = false
+                            }
                         } errorHandler: {
                             
                         }
@@ -91,6 +90,7 @@ struct PaywallView: View {
                     source.restorePurchase { bool in
                         if bool {
                             source.proSubscription = false
+                            show = false
                         }
                     }
                 } label: {
@@ -131,11 +131,11 @@ struct PaywallView: View {
     private var yearly: some View {
         HStack {
             VStack(spacing: 2) {
-                Text(source.purchaseManager.returnName(product: source.purchaseManager.productsApphud[1]))
+                Text(source.purchaseManager.returnName(product: source.purchaseManager.productsApphud[0]))
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Text(source.purchaseManager.returnPriceSign(product: source.purchaseManager.productsApphud[1]) + source.purchaseManager.returnPrice(product: source.purchaseManager.productsApphud[1]))
+                Text(source.purchaseManager.returnPriceSign(product: source.purchaseManager.productsApphud[0]) + source.purchaseManager.returnPrice(product: source.purchaseManager.productsApphud[1]))
                     .font(.system(size: 15, weight: .medium))
                     .foregroundColor(.white.opacity(0.6))
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -149,7 +149,7 @@ struct PaywallView: View {
                     .background(Color.cSecondary)
                     .clipShape(.rect(cornerRadius: 4))
                 
-                Text("🔥 \(source.purchaseManager.returnPriceSign(product: source.purchaseManager.productsApphud[1]))" + "\(Double(String(format: "%.2f", getSubscriptionPrice(for: source.purchaseManager.productsApphud[1]) / 52)) ?? 0.0)" + "/per week 🔥")
+                Text("🔥 \(source.purchaseManager.returnPriceSign(product: source.purchaseManager.productsApphud[0]))" + "\(Double(String(format: "%.2f", getSubscriptionPrice(for: source.purchaseManager.productsApphud[0]) / 52)) ?? 0.0)" + "/per week 🔥")
                     .font(.system(size: 13, weight: .regular))
                     .foregroundColor(.white)
             }
@@ -212,11 +212,11 @@ struct PaywallView: View {
     
     private var week: some View {
         HStack {
-            Text(source.purchaseManager.returnName(product: source.purchaseManager.productsApphud[0]))
+            Text(source.purchaseManager.returnName(product: source.purchaseManager.productsApphud[1]))
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            Text(source.purchaseManager.returnPriceSign(product: source.purchaseManager.productsApphud[0]) + source.purchaseManager.returnPrice(product: source.purchaseManager.productsApphud[0]))
+            Text(source.purchaseManager.returnPriceSign(product: source.purchaseManager.productsApphud[1]) + source.purchaseManager.returnPrice(product: source.purchaseManager.productsApphud[1]))
                 .font(.system(size: 15, weight: .medium))
                 .foregroundColor(.white.opacity(0.6))
         }

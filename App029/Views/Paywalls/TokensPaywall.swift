@@ -147,7 +147,7 @@ struct TokensPaywall: View {
     
     private func getSubscriptionPrice(for product: ApphudProduct) -> Double {
         if let price = product.skProduct?.price {
-            return Double(truncating: price)
+            return Double(truncating: price).roundToPlaces(2)
         } else {
             return 0
         }
@@ -165,7 +165,7 @@ struct TokensPaywall: View {
                     .foregroundColor(.white.opacity(0.6))
             }.frame(maxWidth: .infinity, alignment: .leading)
             
-            Text("\(getSubscriptionPrice(for: source.purchaseManager.productsApphud1[selection]).truncate(places: 2))")
+            Text("\(getSubscriptionPrice(for: source.purchaseManager.productsApphud1[selection]))" + source.purchaseManager.returnPriceSign(product: source.purchaseManager.productsApphud1[selection]))
                 .font(.system(size: 15, weight: .medium))
                 .foregroundColor(.white.opacity(0.6))
         }
@@ -190,5 +190,17 @@ struct TokensPaywall: View {
 extension Double {
     func truncate(places : Int)-> Double {
         return Double(floor(pow(10.0, Double(places)) * self)/pow(10.0, Double(places)))
+    }
+}
+
+extension Double {
+    /// Rounds the double to decimal places value
+    func roundToPlaces(_ places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+    func cutOffDecimalsAfter(_ places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self*divisor).rounded(.towardZero) / divisor
     }
 }
