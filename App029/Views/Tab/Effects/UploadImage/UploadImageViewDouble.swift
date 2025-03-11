@@ -48,9 +48,9 @@ struct UploadImageViewDouble: View {
                     guard source.tokens >= 1 else {
                         if !source.proSubscription {
                             showPaywall = true
-                            return
+                        } else {
+                            showPaywallToken = true
                         }
-                        showPaywallToken = true
                         return
                     }
                     if let image1 = inputImage, let image2 = inputImage1, let image = combineImagesWithBlur(image1, image2) {

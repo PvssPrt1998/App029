@@ -58,8 +58,11 @@ final class Source: ObservableObject {
         purchaseManager.loadPaywalls {
             if Apphud.hasActiveSubscription() {
                 self.proSubscription = true
+                print("PRO SUBSCRIPTION \(self.proSubscription)")
+            } else {
+                self.proSubscription = false
+                print("PRO SUBSCRIPTION \(self.proSubscription)")
             }
-            
         }
         self.purchaseManager.loadPaywalls1 {
             print(self.purchaseManager.productsApphud1)

@@ -31,13 +31,14 @@ struct UploadImageView: View {
                 }
                 
                 Button {
-                    
                     if source.tokens < 1 {
+                        print("SCOW PAYWALL SUBSCR \(source.proSubscription)")
                         if !source.proSubscription {
                             showPaywall = true
-                            return
+                            print("SCOW PAYWALL")
+                        } else {
+                            showPaywallToken = true
                         }
-                        showPaywallToken = true
                     } else {
                         var effect = effect
                         effect.image = inputImage

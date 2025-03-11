@@ -27,6 +27,8 @@ struct HistoryView: View {
                             .scaledToFit()
                             .frame(width: 82, height: 32)
                     }
+                    .disabled(source.proSubscription)
+                    .opacity(source.proSubscription ? 0 : 1)
                 }
                 .padding(.horizontal, 16)
                 .frame(height: 44)
@@ -62,6 +64,9 @@ struct HistoryView: View {
             }
         }
         .toolbarBackground(.bgSecond, for: .navigationBar)
+        .fullScreenCover(isPresented: $showPaywall) {
+            PaywallView(show: $showPaywall)
+        }
     }
     
     private var empty: some View {

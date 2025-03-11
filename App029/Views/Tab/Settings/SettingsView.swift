@@ -18,7 +18,7 @@ struct SettingsView: View {
                 .ignoresSafeArea()
             VStack(spacing: 0) {
                 header
-                    .background(Color.bgMain)
+                    .background(Color.bgSecond)
                 
                 content
                     .background(Color.bgMain)
@@ -52,6 +52,8 @@ struct SettingsView: View {
                     .scaledToFit()
                     .frame(width: 82, height: 32)
             }
+            .disabled(source.proSubscription)
+            .opacity(source.proSubscription ? 0 : 1)
         }
         .padding(.horizontal, 16)
         .frame(height: 44)
@@ -120,6 +122,7 @@ struct SettingsView: View {
             }
         }
         .padding(16)
+        .frame(maxHeight: .infinity, alignment:. top)
     }
     
     func share() {
