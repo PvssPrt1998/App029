@@ -2,6 +2,7 @@ import SwiftUI
 import AVKit
 
 struct PreviewFromCategoryView: View {
+    @Environment(\.safeAreaInsets) private var safeAreaInsets
     @EnvironmentObject var source: Source
     @EnvironmentObject var router: EffectsV2Router
     typealias nextScreen = EffectsV2Route.CategoryListRoute.PreviewRoute
@@ -31,64 +32,50 @@ struct PreviewFromCategoryView: View {
     
     var body: some View {
         ZStack {
+            Color.bgSecond.ignoresSafeArea()
             Color.bgMain.ignoresSafeArea()
+                .padding(.top, safeAreaInsets.top)
             
-            VStack(spacing: 8) {
-                VideoPlayer(player: player)
-                    .disabled(true)
-                    .clipShape(.rect(cornerRadius: 8))
-                    .onAppear { player.play() }
-                    .onDisappear{ player.pause() }
-                    .onReceive(NotificationCenter
-                        .default
-                        .publisher(
-                            for: .AVPlayerItemDidPlayToEndTime,
-                            object: player.currentItem),
-                               perform: { _ in
-                                    player.seek(to: .zero)
-                                    player.play()
-                                }
-                    )
-                
-                Button {
-                    if effect.id == 86 || effect.id == 81 {
-                        router.path.append(nextScreen.photoUploadDouble(effect))
-                    } else {
-                        router.path.append(nextScreen.photoUpload(effect))
-                    }
-                } label: {
-                    Text("\(Image(systemName: "bolt.fill")) Use the effect")
-                        .font(.appFont(.Title2Emphasized))
-                        .foregroundStyle(.textTertiary)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .frame(height: 64)
-                        .background(Color.cSecondary)
+            VStack(spacing: 16) {
+                header
+                VStack(spacing: 8) {
+                    VideoPlayer(player: player)
+                        .disabled(true)
                         .clipShape(.rect(cornerRadius: 8))
+                        .onAppear { player.play() }
+                        .onDisappear{ player.pause() }
+                        .onReceive(NotificationCenter
+                            .default
+                            .publisher(
+                                for: .AVPlayerItemDidPlayToEndTime,
+                                object: player.currentItem),
+                                   perform: { _ in
+                                        player.seek(to: .zero)
+                                        player.play()
+                                    }
+                        )
+                    
+                    Button {
+                        if effect.id == 86 || effect.id == 81 {
+                            router.path.append(nextScreen.photoUploadDouble(effect))
+                        } else {
+                            router.path.append(nextScreen.photoUpload(effect))
+                        }
+                    } label: {
+                        Text("\(Image(systemName: "bolt.fill")) Use the effect")
+                            .font(.appFont(.Title2Emphasized))
+                            .foregroundStyle(.textTertiary)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .frame(height: 64)
+                            .background(Color.cSecondary)
+                            .clipShape(.rect(cornerRadius: 8))
+                    }
                 }
+                .padding(EdgeInsets(top: 16, leading: 16, bottom: 27, trailing: 16))
             }
-            .padding(EdgeInsets(top: 16, leading: 16, bottom: 27, trailing: 16))
+            .frame(maxHeight: .infinity, alignment: .top)
         }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(effect.effect)
-                    .font(.appFont(.BodyEmphasized))
-                    .foregroundStyle(.white)
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showPaywall = true
-                } label: {
-                    Image("ProButton")//make it button
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 82, height: 32)
-                }
-                
-                    .disabled(source.proSubscription == true)
-                    .opacity(source.proSubscription ? 0 : 1)
-            }
-        }
-        .toolbarBackground(.bgSecond, for: .navigationBar)
+        .toolbar(.hidden)
         .onAppear {
             player.play()
         }
@@ -101,6 +88,43 @@ struct PreviewFromCategoryView: View {
         .fullScreenCover(isPresented: $showPaywall) {
             PaywallView(show: $showPaywall)
         }
+    }
+    
+    private var header: some View {
+        HStack(spacing: 6) {
+            Button {
+                router.path.removeLast()
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "chevron.left")//make it button
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundStyle(.white)
+                    Text("Back")
+                        .font(.system(size: 17, weight: .regular))
+                        .foregroundStyle(.white)
+                }
+            }
+            Spacer()
+            Button {
+                showPaywall = true
+            } label: {
+                Image("ProButton")//make it button
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 82, height: 32)
+            }
+            
+                .disabled(source.proSubscription == true)
+                .opacity(source.proSubscription ? 0 : 1)
+            
+        }
+        .padding(.horizontal, 16)
+        .frame(height: 44)
+        .overlay(
+            Text(effect.effect)
+                .font(.appFont(.BodyEmphasized))
+                .foregroundStyle(.white)
+        )
     }
 }
 

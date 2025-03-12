@@ -2,44 +2,27 @@ import SwiftUI
 
 struct HistoryView: View {
     
+    @Environment(\.safeAreaInsets) private var safeAreaInsets
     @EnvironmentObject var source: Source
     @EnvironmentObject var router: EffectsV2Router
     @Binding var selection: Int
     @State var showPaywall = false
     
-    @State var array: Array<Video>
-    
     var body: some View {
         ZStack {
+            Color.bgSecond.ignoresSafeArea()
             Color.bgMain.ignoresSafeArea()
-            VStack(spacing: 0) {
-                HStack {
-                    Text("Your videos")
-                        .font(.appFont(.Title2Emphasized))
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    Button {
-                        showPaywall = true
-                    } label: {
-                        Image("ProButton")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 82, height: 32)
-                    }
-                    .disabled(source.proSubscription)
-                    .opacity(source.proSubscription ? 0 : 1)
-                }
-                .padding(.horizontal, 16)
-                .frame(height: 44)
-                if array.isEmpty {
+                .padding(.top, safeAreaInsets.top)
+            VStack(spacing: 16) {
+                header
+                if source.historyArray.isEmpty {
                     empty
                 } else {
                     ScrollView(.vertical, showsIndicators: false) {
-                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
-                            ForEach(array, id: \.self) { video in
+                        LazyVGrid(columns: [GridItem(.flexible(), spacing: 8), GridItem(.flexible())], spacing: 8) {
+                            ForEach(source.historyArray, id: \.self) { video in
                                 HistoryListCard(video: video)
-                                    .frame(height: 250)
+                                    .clipShape(.rect(cornerRadius: 8))
                             }
                         }
                         .padding(16)
@@ -47,26 +30,33 @@ struct HistoryView: View {
                 }
             }
         }
-        .onReceive(source.categoriesArrayChangedPublisher) { output in
-            array = source.historyArray
+        .toolbar(.hidden)
+        .fullScreenCover(isPresented: $showPaywall) {
+            PaywallView(show: $showPaywall)
         }
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Text("Your videos")
-                    .font(.appFont(.Title2Emphasized))
-                    .foregroundStyle(.white)
-            }
-            ToolbarItem(placement: .topBarTrailing) {
+    }
+    
+    private var header: some View {
+        HStack(spacing: 6) {
+            Text("Your videos")
+                .font(.appFont(.Title2Emphasized))
+                .foregroundStyle(.white)
+            Spacer()
+            Button {
+                showPaywall = true
+            } label: {
                 Image("ProButton")//make it button
                     .resizable()
                     .scaledToFit()
                     .frame(width: 82, height: 32)
             }
+            
+                .disabled(source.proSubscription == true)
+                .opacity(source.proSubscription ? 0 : 1)
+            
         }
-        .toolbarBackground(.bgSecond, for: .navigationBar)
-        .fullScreenCover(isPresented: $showPaywall) {
-            PaywallView(show: $showPaywall)
-        }
+        .padding(.horizontal, 16)
+        .frame(height: 44)
     }
     
     private var empty: some View {

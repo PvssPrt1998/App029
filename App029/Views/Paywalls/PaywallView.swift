@@ -135,7 +135,7 @@ struct PaywallView: View {
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Text(source.purchaseManager.returnPriceSign(product: source.purchaseManager.productsApphud[0]) + source.purchaseManager.returnPrice(product: source.purchaseManager.productsApphud[1]))
+                Text(source.purchaseManager.returnPriceSign(product: source.purchaseManager.productsApphud[0]) + source.purchaseManager.returnPrice(product: source.purchaseManager.productsApphud[0]))
                     .font(.system(size: 15, weight: .medium))
                     .foregroundColor(.white.opacity(0.6))
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -149,7 +149,7 @@ struct PaywallView: View {
                     .background(Color.cSecondary)
                     .clipShape(.rect(cornerRadius: 4))
                 
-                Text("🔥 \(source.purchaseManager.returnPriceSign(product: source.purchaseManager.productsApphud[0]))" + "\(Double(String(format: "%.2f", getSubscriptionPrice(for: source.purchaseManager.productsApphud[0]) / 52)) ?? 0.0)" + "/per week 🔥")
+                Text("🔥 \(source.purchaseManager.returnPriceSign(product: source.purchaseManager.productsApphud[0]))" + "\(pricePerWeek() ?? 0)" + "/per week 🔥")
                     .font(.system(size: 13, weight: .regular))
                     .foregroundColor(.white)
             }
@@ -167,6 +167,11 @@ struct PaywallView: View {
             isYear = true
         }
     }
+    
+    func pricePerWeek() -> Double? {
+        guard let price = Double(String(format: "%.2f", getSubscriptionPrice(for: source.purchaseManager.productsApphud[0]) / 52)) else { return nil }
+        return price
+    }
                      
      private func getSubscriptionPrice(for product: ApphudProduct) -> Double {
          if let price = product.skProduct?.price {
@@ -182,29 +187,37 @@ struct PaywallView: View {
                 Image(systemName: "checkmark")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundStyle(.white)
+                    .frame(height: 22)
                 Image(systemName: "checkmark")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundStyle(.white)
+                    .frame(height: 22)
                 Image(systemName: "checkmark")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundStyle(.white)
+                    .frame(height: 22)
                 Image(systemName: "checkmark")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundStyle(.white)
+                    .frame(height: 22)
             }
             VStack(alignment: .leading, spacing: 16) {
                 Text("Unlimited Video Generations")
                     .font(.system(size: 17, weight: .regular))
                     .foregroundStyle(.white)
+                    .frame(height: 22)
                 Text("Ad-Free Experience")
                     .font(.system(size: 17, weight: .regular))
                     .foregroundStyle(.white)
+                    .frame(height: 22)
                 Text("High-Quality Video Output")
                     .font(.system(size: 17, weight: .regular))
                     .foregroundStyle(.white)
+                    .frame(height: 22)
                 Text("Access to All Effects")
                     .font(.system(size: 17, weight: .regular))
                     .foregroundStyle(.white)
+                    .frame(height: 22)
             }
         }
         .frame(width: 350)

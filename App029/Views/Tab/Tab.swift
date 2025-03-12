@@ -5,6 +5,7 @@ struct Tab: View {
     @EnvironmentObject var router: EffectsV2Router
     @EnvironmentObject var source: Source
     @State var selection = 0
+    @State var showPaywall = false
     
     init() {
         let appearance = UITabBarAppearance()
@@ -28,6 +29,7 @@ struct Tab: View {
                     switch route {
                     case .categoryList(let category): CategoryListView(category: category).environmentObject(router)
                     case .preview(let effect): PreviewView(effect: effect).environmentObject(router)
+                    case .historyResult(let video): HistoryResult(video: video)
                     }
                 }
                 .navigationDestination(for: EffectsV2Route.PreviewRoute.self) { route in
@@ -67,7 +69,12 @@ struct Tab: View {
                     case .generate(let effect): GenerationView(effect: effect)
                     }
                 }
+                .fullScreenCover(isPresented: $showPaywall) {
+                    PaywallView(show: $showPaywall)
+                }
+                .toolbar(.hidden)
         }
+        
     }
     
     private var tab: some View {
@@ -78,7 +85,7 @@ struct Tab: View {
                     Text("Effects").font(.system(size: 10, weight: .medium))
                 } }
                 .tag(0)
-            HistoryView(selection: $selection, array: source.historyArray)
+            HistoryView(selection: $selection)
                 .tabItem { VStack {
                     tabViewImage("video.circle.fill")
                     Text("My Videos").font(.system(size: 10, weight: .medium))

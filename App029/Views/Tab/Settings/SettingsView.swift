@@ -6,34 +6,30 @@ struct SettingsView: View {
     
     @EnvironmentObject var source: Source
     @Environment(\.openURL) var openURL
-    @State var tokens = 0
+    @Environment(\.safeAreaInsets) private var safeAreaInsets
     
     @State var showPaywallToken = false
     @State var showPaywall = false
     
     var body: some View {
         ZStack {
-            Color
-                .bgSecond
-                .ignoresSafeArea()
+            Color.bgSecond.ignoresSafeArea()
+            Color.bgMain.ignoresSafeArea()
+                .padding(.top, safeAreaInsets.top)
+            
             VStack(spacing: 0) {
                 header
-                    .background(Color.bgSecond)
                 
                 content
                     .background(Color.bgMain)
             }
             .frame(maxHeight: .infinity, alignment: .top)
         }
-        
-        .onReceive(source.tokenPublisher) { output in
-            tokens = source.tokens
+        .fullScreenCover(isPresented: $showPaywall) {
+            PaywallView(show: $showPaywall)
         }
         .fullScreenCover(isPresented: $showPaywallToken) {
             TokensPaywall(show: $showPaywallToken)
-        }
-        .fullScreenCover(isPresented: $showPaywall) {
-            PaywallView(show: $showPaywall)
         }
     }
     
@@ -45,6 +41,7 @@ struct SettingsView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             Button {
+                print("Showpaywall")
                 showPaywall = true
             } label: {
                 Image("ProButton")//make it button
@@ -71,7 +68,7 @@ struct SettingsView: View {
                 button(imageTitle: "star.circle.fill", title: "Tokens to generate")
             }
             .overlay(
-                Text("\(tokens)")
+                Text("\(source.tokens)")
                 .font(.system(size: 17, weight: .regular))
                 .foregroundStyle(.white)
                 .padding(.horizontal, 16)

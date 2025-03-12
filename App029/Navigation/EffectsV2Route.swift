@@ -4,6 +4,7 @@ enum EffectsV2Route: Hashable {
     
     case preview(Effect)
     case categoryList(Category)
+    case historyResult(Video)
     
     enum PreviewRoute: Hashable {
         case photoUpload(Effect)

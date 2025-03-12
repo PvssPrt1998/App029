@@ -21,14 +21,60 @@ struct GenerationView: View {
     
     @State var videoGenerationErrorAlertShow = false
     
+    private var header: some View {
+        HStack(spacing: 6) {
+            Button {
+                router.path = NavigationPath()
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "chevron.left")//make it button
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundStyle(.white)
+                    Text("Back")
+                        .font(.system(size: 17, weight: .regular))
+                        .foregroundStyle(.white)
+                }
+            }
+            Spacer()
+            Button {
+                if generating {
+                    showActionSheetGenerating = true
+                } else {
+                    showActionSheetGenerated = true
+                }
+            } label: {
+                Image(systemName: "ellipsis")//make it button
+                    .font(.system(size: 17, weight: .regular))
+                    .foregroundStyle(.white)
+                    .frame(width: 40, height: 32)
+            }
+            .disabled(source.generationIdForDelete == nil)
+            .opacity(source.generationIdForDelete == nil ? 0.3 : 1)
+            
+        }
+        .padding(.horizontal, 8)
+        .frame(height: 44)
+        .overlay(
+            Text(generating ? "Generation" : "Result")
+                .font(.appFont(.BodyEmphasized))
+                .foregroundStyle(.white)
+        )
+    }
+    
     var body: some View {
         ZStack {
+            Color.bgSecond.ignoresSafeArea()
             Color.bgMain.ignoresSafeArea()
-            if generating {
-                generatingView
-            } else {
-                resultView
+                .padding(.top, safeAreaInsets.top)
+            VStack(spacing: 8) {
+                header
+                if generating {
+                    generatingView
+                } else {
+                    resultView
+                }
             }
+            .frame(maxHeight: .infinity, alignment: .top)
         }
         .onAppear {
             if !generationViewHelper.onAppearCalled {
@@ -36,29 +82,7 @@ struct GenerationView: View {
                 send()
             }
         }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(generating ? "Generation" : "Result")
-                    .font(.appFont(.BodyEmphasized))
-                    .foregroundStyle(.white)
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    if generating {
-                        showActionSheetGenerating = true
-                    } else {
-                        showActionSheetGenerated = true
-                    }
-                } label: {
-                    Image(systemName: "ellipsis")//make it button
-                        .font(.system(size: 17, weight: .regular))
-                        .frame(width: 40, height: 32)
-                }
-                .disabled(source.generationIdForDelete == nil)
-                .opacity(source.generationIdForDelete == nil ? 0.3 : 1)
-            }
-        }
-        .toolbarBackground(.bgSecond, for: .navigationBar)
+        .toolbar(.hidden)
         .alert("Video generation error", isPresented: $videoGenerationErrorAlertShow) {
             Button("Cancel", role: .cancel) {
 //                while router.path.count > 0 {
@@ -89,15 +113,6 @@ struct GenerationView: View {
             Text("Video upload error")
         }
         .confirmationDialog("", isPresented: $showActionSheetGenerating, titleVisibility: .hidden) {
-                        Button("Download") {
-                        }
-                        .disabled(true)
-
-                        Button("Share") {
-                            
-                        }
-                        .disabled(true)
-
                         Button("Delete", role: .destructive) {
                             guard let id = source.generationIdForDelete else { return }
                             source.removeVideo(id: id)
@@ -130,9 +145,12 @@ struct GenerationView: View {
             print("CreateVideo.generation id: " + generationID)
             self.checkVideoStatus(generationID) { status, url in
                 print("ALL DONE GENERATION " + status + " " + url)
-                source.genIDArr.remove(generationID)
-                source.saveCompletedVideo(generationID, status: status, url: url)
-                self.prepareForShowVideo(urlStr: url)
+                if status == "finished" {
+                    source.genIDArr.remove(generationID)
+                    print("Save completed from generate")
+                    source.saveCompletedVideo(generationID, status: status, url: url)
+                    self.prepareForShowVideo(urlStr: url)
+                }
             } errorHandler: {
                 showErrorAlert()
             }

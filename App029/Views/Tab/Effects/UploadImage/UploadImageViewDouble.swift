@@ -25,57 +25,65 @@ struct UploadImageViewDouble: View {
     
     var body: some View {
         ZStack {
+            Color.bgSecond.ignoresSafeArea()
             Color.bgMain.ignoresSafeArea()
+                .padding(.top, safeAreaInsets.top)
             
-            VStack(spacing: 8) {
-                HStack(spacing: 8) {
-                    GeometryReader { geometry in
-                        imageView
-                            .frame(width: geometry.size.width, height: geometry.size.height)
-                            .clipped()
-                            .clipShape(.rect(cornerRadius: 8))
-                    }
-                    GeometryReader { geometry in
-                        imageView1
-                            .frame(width: geometry.size.width, height: geometry.size.height)
-                            .clipped()
-                            .clipShape(.rect(cornerRadius: 8))
-                    }
-                }
-                .frame(maxHeight: .infinity)
-                
-                Button {
-                    guard source.tokens >= 1 else {
-                        if !source.proSubscription {
-                            showPaywall = true
-                        } else {
-                            showPaywallToken = true
+            VStack(spacing: 0) {
+                header
+                VStack(spacing: 8) {
+                    HStack(spacing: 8) {
+                        GeometryReader { geometry in
+                            imageView
+                                .frame(width: geometry.size.width, height: geometry.size.height)
+                                .clipped()
+                                .clipShape(.rect(cornerRadius: 8))
                         }
-                        return
+                        GeometryReader { geometry in
+                            imageView1
+                                .frame(width: geometry.size.width, height: geometry.size.height)
+                                .clipped()
+                                .clipShape(.rect(cornerRadius: 8))
+                        }
                     }
-                    if let image1 = inputImage, let image2 = inputImage1, let image = combineImagesWithBlur(image1, image2) {
-                        var effect = effect
-                        effect.image = image
-                        router.path.append(nextScreen.generate(effect))
-                    } else {
-                        imageMergeAlertShow = true
+                    .frame(maxHeight: .infinity)
+                    
+                    Button {
+                        guard source.tokens >= 1 else {
+                            if !source.proSubscription {
+                                showPaywall = true
+                            } else {
+                                showPaywallToken = true
+                            }
+                            return
+                        }
+                        if let image1 = inputImage, let image2 = inputImage1, let image = combineImagesWithBlur(image1, image2) {
+                            var effect = effect
+                            effect.image = image
+                            router.path.append(nextScreen.generate(effect))
+                        } else {
+                            imageMergeAlertShow = true
+                        }
+                    } label: {
+                        Text("\(Image(systemName: "wand.and.stars")) Generate")
+                            .font(.appFont(.Title2Emphasized))
+                            .foregroundStyle(.textTertiary)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .frame(height: 64)
+                            .background(Color.cSecondary)
+                            .clipShape(.rect(cornerRadius: 8))
                     }
-                } label: {
-                    Text("\(Image(systemName: "wand.and.stars")) Generate")
-                        .font(.appFont(.Title2Emphasized))
-                        .foregroundStyle(.textTertiary)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .frame(height: 64)
-                        .background(Color.cSecondary)
-                        .clipShape(.rect(cornerRadius: 8))
+                    .disabled(inputImage == nil || inputImage1 == nil)
+                    .opacity(inputImage == nil || inputImage1 == nil ? 0.3 : 1)
+                    .alert("Merge images error", isPresented: $imageMergeAlertShow) {
+                        Button("OK", role: .cancel) {imageMergeAlertShow = false}
+                    }
                 }
-                .disabled(inputImage == nil || inputImage1 == nil)
-                .opacity(inputImage == nil || inputImage1 == nil ? 0.3 : 1)
-                .alert("Merge images error", isPresented: $imageMergeAlertShow) {
-                    Button("OK", role: .cancel) {imageMergeAlertShow = false}
-                }
+                .padding(EdgeInsets(top: 16, leading: 16, bottom: 27, trailing: 16))
             }
-            .padding(EdgeInsets(top: 16, leading: 16, bottom: 27, trailing: 16))
+            .frame(maxHeight: .infinity, alignment: .top)
+            
+
         }
         .sheet(isPresented: $showingImagePicker) {
             ImagePicker(image: $inputImage)
@@ -112,6 +120,43 @@ struct UploadImageViewDouble: View {
         .fullScreenCover(isPresented: $showPaywall) {
             PaywallView(show: $showPaywall)
         }
+    }
+    
+    private var header: some View {
+        HStack(spacing: 6) {
+            Button {
+                router.path.removeLast()
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "chevron.left")//make it button
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundStyle(.white)
+                    Text("Back")
+                        .font(.system(size: 17, weight: .regular))
+                        .foregroundStyle(.white)
+                }
+            }
+            Spacer()
+            Button {
+                showPaywall = true
+            } label: {
+                Image("ProButton")//make it button
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 82, height: 32)
+            }
+            
+                .disabled(source.proSubscription == true)
+                .opacity(source.proSubscription ? 0 : 1)
+            
+        }
+        .padding(.horizontal, 16)
+        .frame(height: 44)
+        .overlay(
+            Text(effect.effect)
+                .font(.appFont(.BodyEmphasized))
+                .foregroundStyle(.white)
+        )
     }
     
     func combineImagesWithBlur(_ leftImage: UIImage, _ rightImage: UIImage) -> UIImage? {
@@ -230,7 +275,7 @@ struct UploadImageViewDouble: View {
                 .clipShape(.rect(cornerRadius: 8))
                 .overlay(
                     Button {
-                        showingImagePicker = true
+                        showingImagePicker1 = true
                     } label: {
                         VStack(spacing: 4) {
                             Image(systemName: "arrow.triangle.2.circlepath")
@@ -264,7 +309,7 @@ struct UploadImageViewDouble: View {
                     .stroke(Color.cSeparator, lineWidth: 1)
             )
             .onTapGesture {
-                showingImagePicker = true
+                showingImagePicker1 = true
             }
         }
     }

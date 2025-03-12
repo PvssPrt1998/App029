@@ -105,19 +105,55 @@ final class Source: ObservableObject {
             self.previewDict = previewDict
         }
         if let historyArr = try? coreDataManager.fetchVideoIds() {
+            print("Count: \(historyArr.count)")
             self.historyArray = historyArr
         }
     }
     
     func saveCompletedVideo(_ generationID: String, status: String, url: String) {
+        print("Save CompletedVideo")
+        if let index = historyArray.firstIndex(where: {generationID == $0.id}) {
+            var video = historyArray[index]
+            video.status = status
+            video.url = url
+            historyArray[index] = video
+            coreDataManager.editVideo(generationID, url: url, status: status)
+            self.documentManager.downloadVideoGenerated(urlStr: url, id: generationID) { str in
+                //print("SAVED TO LOCAL URL Generated: " + str)
+            }
+        } else {
+            coreDataManager.editVideo(generationID, url: url, status: status)
+            self.documentManager.downloadVideoGenerated(urlStr: url, id: generationID) { str in
+                //print("SAVED TO LOCAL URL Generated: " + str)
+            }
+        }
+        
+    }
+    
+    func saveOrEditCompletedVideo(_ generationID: String, status: String, url: String) {
+        if let index = historyArray.firstIndex(where: {generationID == $0.id}) {
+            var video = historyArray[index]
+            video.status = status
+            video.url = url
+            historyArray[index] = video
+        }
         coreDataManager.editVideo(generationID, url: url, status: status)
+        self.documentManager.removeVideoBy(filename: generationID + ".mp4")
         self.documentManager.downloadVideoGenerated(urlStr: url, id: generationID) { str in
             //print("SAVED TO LOCAL URL Generated: " + str)
         }
     }
     
     func savePendingVideo(_ generationID: String, status: String, effect: String, image: Data) {
-        coreDataManager.saveVideo(generationID, effect: effect, status: status, image: image)
+        if let index = historyArray.firstIndex(where: {$0.id == generationID}) {
+            let video = Video(id: generationID, image: image, effect: effect, url: nil, status: status)
+            historyArray[index] = video
+            coreDataManager.editVideo(generationID, url: nil, status: status)
+        } else {
+            let video = Video(id: generationID, image: image, effect: effect, url: nil, status: status)
+            historyArray.append(video)
+            coreDataManager.saveVideo(generationID, effect: effect, status: status, image: image)
+        }
     }
     
     func load() {
@@ -144,11 +180,6 @@ final class Source: ObservableObject {
                                let urlData = NSData(contentsOf: url)
                             {
                                 localUrl = urlStr
-                                if effectRemote.effect == "Decapitate it" {
-                                    //print("\n\n\n\n\n\n fetched but cracked \n\n\n\n\n")
-                                }
-                                //print("FEtched")
-                                //print(localUrl)
                             } else {
                                 print("Handle unable local load")
                                 self.documentManager.removeVideoBy(filename: "\(effectRemote.id).mp4")//Remove old From DOC
@@ -212,7 +243,7 @@ final class Source: ObservableObject {
             if status == "error" || url == "error" {
                 errorHandler()
             } else {
-                if status == "pending" {
+                if status == "pending" || status == "queued" {
                     //save status to coredata for history load element
                     //save status to historyArray for history load element
                     completion("pending", "pending")

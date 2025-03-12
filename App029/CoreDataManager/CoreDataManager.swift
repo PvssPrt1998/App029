@@ -59,7 +59,7 @@ final class DataManager {
         return array
     }
     
-    func editVideo(_ id: String, url: String, status: String) {
+    func editVideo(_ id: String, url: String?, status: String) {
         do {
             let videosCD = try coreDataStack.managedContext.fetch(VideoCD.fetchRequest())
             videosCD.forEach { vcd in

@@ -20,43 +20,50 @@ struct UploadImageView: View {
     
     var body: some View {
         ZStack {
+            Color.bgSecond.ignoresSafeArea()
             Color.bgMain.ignoresSafeArea()
+                .padding(.top, safeAreaInsets.top)
             
-            VStack(spacing: 8) {
-                GeometryReader { geometry in
-                    imageView
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .clipped()
-                        .clipShape(.rect(cornerRadius: 8))
-                }
-                
-                Button {
-                    if source.tokens < 1 {
-                        print("SCOW PAYWALL SUBSCR \(source.proSubscription)")
-                        if !source.proSubscription {
-                            showPaywall = true
-                            print("SCOW PAYWALL")
-                        } else {
-                            showPaywallToken = true
-                        }
-                    } else {
-                        var effect = effect
-                        effect.image = inputImage
-                        router.path.append(nextScreen.generate(effect))
+            VStack(spacing: 0) {
+                header
+                VStack(spacing: 8) {
+                    GeometryReader { geometry in
+                        imageView
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .clipped()
+                            .clipShape(.rect(cornerRadius: 8))
                     }
-                } label: {
-                    Text("\(Image(systemName: "wand.and.stars")) Generate")
-                        .font(.appFont(.Title2Emphasized))
-                        .foregroundStyle(.textTertiary)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .frame(height: 64)
-                        .background(Color.cSecondary)
-                        .clipShape(.rect(cornerRadius: 8))
+                    
+                    Button {
+                        if source.tokens < 1 {
+                            print("SCOW PAYWALL SUBSCR \(source.proSubscription)")
+                            if !source.proSubscription {
+                                showPaywall = true
+                                print("SCOW PAYWALL")
+                            } else {
+                                showPaywallToken = true
+                            }
+                        } else {
+                            var effect = effect
+                            effect.image = inputImage
+                            router.path.append(nextScreen.generate(effect))
+                        }
+                    } label: {
+                        Text("\(Image(systemName: "wand.and.stars")) Generate")
+                            .font(.appFont(.Title2Emphasized))
+                            .foregroundStyle(.textTertiary)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .frame(height: 64)
+                            .background(Color.cSecondary)
+                            .clipShape(.rect(cornerRadius: 8))
+                    }
+                    .disabled(inputImage == nil)
+                    .opacity(inputImage == nil ? 0.3 : 1)
                 }
-                .disabled(inputImage == nil)
-                .opacity(inputImage == nil ? 0.3 : 1)
+                .padding(EdgeInsets(top: 16, leading: 16, bottom: 27, trailing: 16))
             }
-            .padding(EdgeInsets(top: 16, leading: 16, bottom: 27, trailing: 16))
+            
+
         }
         .sheet(isPresented: $showingImagePicker) {
             ImagePicker(image: $inputImage)
@@ -81,13 +88,50 @@ struct UploadImageView: View {
                     .opacity(source.proSubscription ? 0 : 1)
             }
         }
-        .toolbarBackground(.bgSecond, for: .navigationBar)
+        .toolbar(.hidden)
         .fullScreenCover(isPresented: $showPaywallToken) {
             TokensPaywall(show: $showPaywallToken)
         }
         .fullScreenCover(isPresented: $showPaywall) {
             PaywallView(show: $showPaywall)
         }
+    }
+    
+    private var header: some View {
+        HStack(spacing: 6) {
+            Button {
+                router.path.removeLast()
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "chevron.left")//make it button
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundStyle(.white)
+                    Text("Back")
+                        .font(.system(size: 17, weight: .regular))
+                        .foregroundStyle(.white)
+                }
+            }
+            Spacer()
+            Button {
+                showPaywall = true
+            } label: {
+                Image("ProButton")//make it button
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 82, height: 32)
+            }
+            
+                .disabled(source.proSubscription == true)
+                .opacity(source.proSubscription ? 0 : 1)
+            
+        }
+        .padding(.horizontal, 16)
+        .frame(height: 44)
+        .overlay(
+            Text(effect.effect)
+                .font(.appFont(.BodyEmphasized))
+                .foregroundStyle(.white)
+        )
     }
     
     @ViewBuilder var imageView: some View {

@@ -167,7 +167,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "yearly_59.99_nottrial",
+          "productID" : "yearly_39.99_nottrial",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Yearly",
           "subscriptionGroupID" : "37A89ADE",
@@ -195,7 +195,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "week_6.99_nottrial",
+          "productID" : "week_4.99_nottrial",
           "recurringSubscriptionPeriod" : "P1W",
           "referenceName" : "Weekly",
           "subscriptionGroupID" : "37A89ADE",

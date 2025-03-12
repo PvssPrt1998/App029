@@ -46,6 +46,7 @@ struct CategoryListCard: View {
         VStack(spacing: 8) {
             effectHeader
             videoPreview
+                .clipShape(.rect(cornerRadius: 8))
         }
         .frame(width: 175)
     }
@@ -60,9 +61,9 @@ struct CategoryListCard: View {
      private var videoPreview: some View {
          VideoPlayer(player: player)
              .disabled(true)
-             .frame(width: 175, height: 220)
-             .clipShape(.rect(cornerRadius: 8))
+             .frame(width: (UIScreen.main.bounds.width - 40)/2, height: 220)
              .clipped()
+             .clipShape(.rect(cornerRadius: 8))
              .onAppear { player.play() }
              .onDisappear{ player.pause() }
              .onReceive(NotificationCenter

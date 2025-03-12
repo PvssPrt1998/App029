@@ -22,7 +22,6 @@ struct HistoryListCard: View {
     @State var video: Video
     
     init(video: Video) {
-        print(video)
         self.video = video
         if video.status == "finished" {
             generationState = .completed
@@ -90,9 +89,6 @@ struct HistoryListCard: View {
             .onDisappear {
                 player.pause()
             }
-        .sheet(isPresented: $showSheet) {
-            HistoryResult(video: video, show: $showSheet)
-        }
     }
     
     @ViewBuilder var bodyContent: some View {
@@ -110,9 +106,10 @@ struct HistoryListCard: View {
                 source.genIDArr.remove(generationID)
                 video.status = status
                 video.url = url
+                print("From history card")
                 source.saveCompletedVideo(generationID, status: status, url: url)
                 completion(status, url)
-            } else {
+            } else if status != "error" {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
                     checkVideoStatus(generationID) { status, url in
                         completion(status, url)
@@ -132,19 +129,21 @@ struct HistoryListCard: View {
                 image
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 175, height: 175)
+                    .frame(width: (UIScreen.main.bounds.width - 40)/2, height: (UIScreen.main.bounds.width - 40)/2)
                     .clipped()
                 LinearGradient(colors: [.black.opacity(0.7), .black.opacity(0)], startPoint: .top, endPoint: .bottom)
+                    .frame(height: 25)
+                    .frame(maxHeight: .infinity, alignment: .top)
             } else {
                 Rectangle()
                     .fill(.white.opacity(0.3))
             }
             
             Text("Video still generating")
-                .font(.system(size: 17, weight: .regular))
+                .font(.system(size: 12, weight: .regular))
                 .foregroundStyle(.textMain)
         }
-        .frame(width: 175, height: 175)
+        .frame(width: (UIScreen.main.bounds.width - 40)/2, height: (UIScreen.main.bounds.width - 40)/2)
         .clipShape(.rect(cornerRadius: 8))
     }
     
@@ -166,7 +165,7 @@ struct HistoryListCard: View {
                     }
                 }
             )
-            .frame(width: 175, height: 175)
+            .frame(width: (UIScreen.main.bounds.width - 40)/2, height: (UIScreen.main.bounds.width - 40)/2)
             .clipShape(.rect(cornerRadius: 8))
     }
     
@@ -180,14 +179,20 @@ struct HistoryListCard: View {
     
     private var content: some View {
         Button {
-            showSheet = true
+            //showSheet = true
+            if video.status == "finished" {
+                router.path.append(EffectsV2Route.historyResult(video))
+            }
         } label: {
             ZStack {
                 videoPreview
+                    .clipShape(.rect(cornerRadius: 8))
                 effectHeader
                 LinearGradient(colors: [.black.opacity(0.7), .black.opacity(0)], startPoint: .top, endPoint: .bottom)
+                    .frame(height: 25)
+                    .frame(maxHeight: .infinity, alignment: .top)
             }
-            .frame(width: 175, height: 175)
+            .frame(width: (UIScreen.main.bounds.width - 40)/2, height: (UIScreen.main.bounds.width - 40)/2)
             .clipShape(.rect(cornerRadius: 8))
         }
     }
@@ -202,15 +207,17 @@ struct HistoryListCard: View {
                 .foregroundStyle(.textMain)
         }
         .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
-        .frame(maxWidth: .infinity, alignment: .trailing)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
     }
     
      private var videoPreview: some View {
          VideoPlayer(player: player)
              .disabled(true)
-             .frame(width: 175, height: 175)
+             .frame(width: ((UIScreen.main.bounds.width - 40)/2) * 16 / 9, height: 175 * 16 / 9)
+             .frame(width: (UIScreen.main.bounds.width - 40)/2, height: (UIScreen.main.bounds.width - 40)/2)
              .clipShape(.rect(cornerRadius: 8))
              .clipped()
+             .clipShape(.rect(cornerRadius: 8))
              .onAppear { player.play() }
              .onDisappear{ player.pause() }
              .onReceive(NotificationCenter
