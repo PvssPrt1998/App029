@@ -12,20 +12,7 @@ struct EffectsV2EffectCard: View {
     
     init(effect: Effect) {
         self.effect = effect
-        if let localUrlStr = effect.localUrl, let url = URL(string: localUrlStr) {
-            //print("Load local")
-            let player = AVPlayer(url: url)
-            player.isMuted = true
-            player.play()
-            self.player = player
-        } else if let urlStr = effect.previewSmall, let url = URL(string: urlStr) {
-            let player = AVPlayer(url: url)
-            player.isMuted = true
-            player.play()
-            self.player = player
-        } else {
-            self.player = AVPlayer()
-        }
+        self.player = AVPlayer()
     }
     
     var body: some View {
@@ -35,21 +22,32 @@ struct EffectsV2EffectCard: View {
             content
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                player.play()
-            }
+            load()
         }
         .onDisappear {
             self.player.pause()
         }
-//        .onReceive(source.categoriesArrayChangedPublisher) {_ in
-//            if let categoryIndex = source.categoriesArray.firstIndex(where: {$0.items.contains(where: {$0.id == effect.id})}),
-//               let index = source.categoriesArray[categoryIndex].items.firstIndex(where: {$0.id == effect.id}) {
-//                if effect.localUrl != source.categoriesArray[categoryIndex].items[index].localUrl {
-//                    effect.localUrl = source.categoriesArray[categoryIndex].items[index].localUrl
-//                }
-//            }
-//        }
+    }
+    
+    func load() {
+        if let localUrlStr = effect.localUrl, let url = URL(string: localUrlStr) {
+            //print("Load local")
+            let player = AVPlayer(url: url)
+            player.isMuted = true
+            player.play()
+            withAnimation {
+                self.player = player
+            }
+        } else if let urlStr = effect.previewSmall, let url = URL(string: urlStr) {
+            let player = AVPlayer(url: url)
+            player.isMuted = true
+            player.play()
+            withAnimation {
+                self.player = player
+            }
+        } else {
+            self.player = AVPlayer()
+        }
     }
     
     @ViewBuilder private var content: some View {

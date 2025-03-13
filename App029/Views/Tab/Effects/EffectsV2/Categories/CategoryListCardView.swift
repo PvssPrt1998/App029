@@ -36,9 +36,11 @@ struct CategoryListCard: View {
         }
         .onAppear {
             player.play()
+            player.isMuted = true
         }
         .onDisappear {
             player.pause()
+            player.isMuted = true
         }
     }
     
@@ -73,6 +75,7 @@ struct CategoryListCard: View {
                      object: player.currentItem),
                         perform: { _ in
                              player.seek(to: .zero)
+                                player.isMuted = true
                              player.play()
                          }
              )

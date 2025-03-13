@@ -8,6 +8,7 @@ struct PaywallView: View {
     @Environment(\.openURL) var openURL
     @EnvironmentObject var source: Source
     @State var isYear = true
+    @State var showClose = false
     
     var body: some View {
         ZStack {
@@ -38,8 +39,14 @@ struct PaywallView: View {
                     .background(Color.black.opacity(0.32))
                     .clipShape(.rect(cornerRadius: 10))
             }
+            .opacity(showClose ? 1 : 0)
             .padding(.horizontal, 16)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                showClose = true
+            }
         }
     }
     

@@ -48,6 +48,7 @@ struct PreviewView: View {
                                 object: player.currentItem),
                                    perform: { _ in
                                         player.seek(to: .zero)
+                                        player.isMuted = true
                                         player.play()
                                     }
                         )
@@ -74,9 +75,11 @@ struct PreviewView: View {
         }
         .toolbar(.hidden)
         .onAppear {
+            player.isMuted = true
             player.play()
         }
         .onDisappear {
+            player.isMuted = true
             player.pause()
         }
         .fullScreenCover(isPresented: $showPaywallToken) {

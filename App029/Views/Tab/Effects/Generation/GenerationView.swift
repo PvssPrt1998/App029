@@ -1,4 +1,5 @@
 import SwiftUI
+import StoreKit
 import Photos
 import AVKit
 
@@ -61,6 +62,17 @@ struct GenerationView: View {
         )
     }
     
+    func requestReview() {
+        if let numb = UserDefaults.standard.object(forKey: "Gen") as? Int {
+            var a = numb + 1
+            if a == 3 || a == 5 || a == 10 {
+                SKStoreReviewController.requestReviewInCurrentScene()
+            }
+        } else {
+            UserDefaults.standard.set(1, forKey: "Gen")
+        }
+    }
+    
     var body: some View {
         ZStack {
             Color.bgSecond.ignoresSafeArea()
@@ -79,6 +91,8 @@ struct GenerationView: View {
         .onAppear {
             if !generationViewHelper.onAppearCalled {
                 generationViewHelper.onAppearCalled = true
+                let defaults = UserDefaults.standard
+                defaults.set(25, forKey: "Age")
                 send()
             }
         }

@@ -93,27 +93,7 @@ struct UploadImageViewDouble: View {
             ImagePicker(image: $inputImage1)
                 .ignoresSafeArea()
         }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(effect.effect)
-                    .font(.appFont(.BodyEmphasized))
-                    .foregroundStyle(.white)
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showPaywall = true
-                } label: {
-                    Image("ProButton")//make it button
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 82, height: 32)
-                }
-                
-                    .disabled(source.proSubscription == true)
-                    .opacity(source.proSubscription ? 0 : 1)
-            }
-        }
-        .toolbarBackground(.bgSecond, for: .navigationBar)
+        .toolbar(.hidden)
         .fullScreenCover(isPresented: $showPaywallToken) {
             TokensPaywall(show: $showPaywallToken)
         }

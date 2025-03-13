@@ -41,6 +41,7 @@ struct PreviewFromCategoryView: View {
                 VStack(spacing: 8) {
                     VideoPlayer(player: player)
                         .disabled(true)
+                        .clipped()
                         .clipShape(.rect(cornerRadius: 8))
                         .onAppear { player.play() }
                         .onDisappear{ player.pause() }
@@ -51,6 +52,7 @@ struct PreviewFromCategoryView: View {
                                 object: player.currentItem),
                                    perform: { _ in
                                         player.seek(to: .zero)
+                            player.isMuted = true
                                         player.play()
                                     }
                         )
@@ -77,9 +79,11 @@ struct PreviewFromCategoryView: View {
         }
         .toolbar(.hidden)
         .onAppear {
+            player.isMuted = true
             player.play()
         }
         .onDisappear {
+            player.isMuted = true
             player.pause()
         }
         .fullScreenCover(isPresented: $showPaywallToken) {

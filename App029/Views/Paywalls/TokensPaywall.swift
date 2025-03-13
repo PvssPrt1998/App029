@@ -1,6 +1,7 @@
 
 import SwiftUI
 import ApphudSDK
+import StoreKit
 
 struct TokensPaywall: View {
     
@@ -8,6 +9,7 @@ struct TokensPaywall: View {
     @Environment(\.openURL) var openURL
     @EnvironmentObject var source: Source
     @State var selectionToken = 0
+    @State var showClose = false
     
     init(show: Binding<Bool>) {
         self._show = show
@@ -46,10 +48,17 @@ struct TokensPaywall: View {
                     .background(Color.black.opacity(0.32))
                     .clipShape(.rect(cornerRadius: 10))
             }
+            .opacity(showClose ? 1 : 0)
             .padding(.horizontal, 16)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                showClose = true
+            }
+        }
     }
+    
     
     private var bottomBar: some View {
         VStack(spacing: 0) {
@@ -204,3 +213,13 @@ extension Double {
         return (self*divisor).rounded(.towardZero) / divisor
     }
 }
+
+//extension SKStoreReviewController {
+//    public static func requestReviewInCurrentScene() {
+//        if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+//            DispatchQueue.main.async {
+//                requestReview(in: scene)
+//            }
+//        }
+//    }
+//}
